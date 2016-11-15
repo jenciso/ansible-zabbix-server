@@ -1,0 +1,13 @@
+---
+mariadb_packages:
+  - MariaDB-client
+  - MariaDB-server
+  - MySQL-python
+
+mariadb_databases: []
+mariadb_users: []
+mariadb_root_password: ''
+
+mariadb_bind_address: '127.0.0.1'
+mysql_port: 3306
+mysql_datadir: /var/lib/mysql

@@ -1,0 +1,5 @@
+- name: Create the Maria repository definition
+  copy: src=MariaDB.repo dest=/etc/yum.repos.d/
+
+- name: Create the GPG key for MariaDB
+  copy: src=RPM-GPG-KEY-MariaDB dest=/etc/pki/rpm-gpg

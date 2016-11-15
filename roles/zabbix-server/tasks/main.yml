@@ -1,0 +1,64 @@
+---
+- name: Install Repo | Zabbix
+  yum: name={{ zabbix_repo_url }} state=present
+  tags:
+    - zabbix-server
+
+- name: Install Pre-requisites | Zabbix
+  yum: name={{ item }} state=present
+  with_items:
+    - mariadb-server
+    - MySQL-python
+ 
+- name: Install Packages | Zabbix
+  yum: name={{ item }} state=present
+  with_items:
+    - zabbix-server-mysql 
+    - zabbix-web-mysql
+    - zabbix-agent
+    - zabbix-get
+  tags:
+    - zabbix-server
+
+- name: Create database | Zabbix
+  mysql_db: name=zabbix state=present
+  tags:
+    - zabbix-server
+
+- name: Create User | Zabbix
+  mysql_user: name=zabbix password=zabbixpass priv=zabbix.*:ALL state=present
+  tags:
+    - zabbix-server
+
+- name: Load Scheme Database | Zabbix
+  shell: zcat create.sql.gz | mysql -uroot zabbix 
+  args:
+    chdir: /usr/share/doc/zabbix-server-mysql-3.2.0
+    creates: /var/lib/mysql/zabbix/users.frm
+  tags:
+    - zabbix-server
+
+- name: Copy Server.conf | Zabbix
+  template: src=zabbix_server.conf dest=/etc/zabbix/zabbix_server.conf
+  notify: restart zabbix-server
+  tags:
+    - zabbix-server
+
+- name: Copy httpd_zabbix.conf | Zabbix 
+  template: src=httpd_zabbix.conf dest=/etc/httpd/conf.d/zabbix.conf
+  notify: restart httpd
+  tags:
+    - zabbix-server
+
+- name: Start service | Zabbix
+  service: name=zabbix-server state=started enabled=yes
+  tags:
+    - zabbix-server
+
+- name: Start service | Zabbix
+  service: name=httpd state=started enabled=yes
+  tags:
+    - zabbix-server
+
+- include: selinux.yml
+  when: selinux_enabled

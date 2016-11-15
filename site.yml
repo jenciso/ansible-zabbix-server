@@ -1,0 +1,12 @@
+---
+- name: Zabbix Server
+  remote_user: root
+  hosts: localhost
+  roles:
+#    - common
+#    - sshd
+#    - firewalld
+#    - newrelic
+    - mariadb
+    - zabbix-server
+#    - zabbix-agentd

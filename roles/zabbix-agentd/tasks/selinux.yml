@@ -1,0 +1,6 @@
+---
+- name: Permissive selinux zabbix_agent_t
+  selinux_permissive: name=zabbix_agent_t permissive=true
+  tags:
+   - zabbix
+   - zabbix-selinux 

@@ -52,7 +52,7 @@ zabbix_client_templates:
   - Template OS Linux
   
 ## Mysql
-mariadb_root_password: b33mv0v1l
+mariadb_root_password: s3cr3t$$..
 
 mariadb_bind_address: '127.0.0.1'
 

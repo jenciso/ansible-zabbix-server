@@ -3,10 +3,8 @@
   remote_user: root
   hosts: localhost
   roles:
-#    - common
-#    - sshd
-#    - firewalld
-#    - newrelic
+    - common
+    - firewalld
     - mariadb
     - zabbix-server
-#    - zabbix-agentd
+    - zabbix-agentd

@@ -1,0 +1,14 @@
+---
+- name: Iptables | Firewall rules
+  iptables: >
+    table={{ item.value.table }}
+    jump={{ item.value.jump }}
+    chain={{ item.value.chain }}
+    ctstate={{ item.value.ctstate }}
+    destination_port={{ item.value.destination_port }}
+    protocol={{ item.value.protocol }}
+    state={{ item.value.state }}
+  with_dict: "{{ iptables_rules }}"
+  when: zabbix_client_rule_iptables_add
+  tags:
+    - iptables

@@ -1,0 +1,17 @@
+---
+- name: Install Repo | Zabbix
+  yum: name={{ zabbix_repo_url }} state=present
+  tags:
+    - zabbix
+
+- name: Install zabbix-agent
+  yum: name=zabbix-agent state=present
+  tags:
+    - zabbix
+
+- name: Permissive selinux zabbix_agent_t
+  selinux_permissive: name=zabbix_agent_t permissive=true
+  when: selinux_enabled
+  tags:
+   - zabbix
+   - zabbix-selinux 

@@ -1,0 +1,34 @@
+---
+- name: Copy yum.conf with proxy enabled
+  template: src=yum.conf dest=/etc/yum.conf
+  when: proxy_enabled
+  tags: 
+    - common
+
+- name: Delete proxy conf in yum.conf
+  lineinfile: dest=/etc/yum.conf state=absent regexp='^proxy='
+  when: proxy_enabled is undefined or not proxy_enabled 
+  tags: 
+    - common
+
+- name: Install EPEL repository definition
+  yum: name=epel-release state=present
+  tags:
+    - common
+
+- name: Packages commons
+  yum: name={{ item }} state=present
+  with_items:
+    - vim-enhanced
+    - bind-utils
+    - net-tools
+    - lrzsz
+    - telnet
+    - curl
+    - libselinux-python
+    - yum-utils
+  tags:
+    - common
+
+- include: selinux.yml
+  when: selinux_enabled

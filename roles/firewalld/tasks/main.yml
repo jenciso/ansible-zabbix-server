@@ -1,0 +1,17 @@
+---
+- name: Check package firewalld
+  yum: name=firewalld state=present
+  tags:
+    - firewalld
+
+- name: Enable firewalld
+  service: name=firewalld enabled=yes state=started
+  tags:
+    - firewalld
+
+- name: Updating firewall rules
+  firewalld: port={{item.value.port}}/{{item.value.protocol}} permanent={{item.value.permanent}} state={{item.value.state }} zone={{item.value.zone}}
+  with_dict: "{{ firewalld_rules }}"
+  notify: reload firewalld
+  tags: 
+    - firewalld

@@ -1,0 +1,15 @@
+---
+- name: Install selinux package Dependences
+  yum: name={{ item }} state=present
+  with_items: 
+    - libselinux-python
+    - policycoreutils-python
+  when: selinux_enabled
+  tags: 
+    - common
+
+- name: Set selinux config
+  selinux: policy=targeted state=enforcing
+  when: selinux_enabled
+  tags:
+    - common

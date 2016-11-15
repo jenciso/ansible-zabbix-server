@@ -1,0 +1,24 @@
+---
+- name: Create a new host or update an existing host's info
+  local_action:
+    module: zabbix_host
+    server_url: "{{ zabbix_url }}"
+    login_user: "{{ zabbix_user }}"
+    login_password: "{{ zabbix_pass }}"
+    host_name: "{{ ansible_hostname | upper }}"
+    host_groups: "{{ zabbix_client_groups }}"
+    link_templates: "{{ zabbix_client_templates }}"
+    status: "{{ zabbix_client_status }}"
+    state: present
+    inventory_mode: automatic
+    interfaces:
+      - type: 1
+        main: 1
+        useip: 1
+        ip: "{{ zabbix_client_ip }}"
+        dns: ""
+        port: 10050
+    proxy: "{{ zabbix_proxy }}"
+  changed_when: false 
+  tags:
+    - zabbix
